@@ -1,6 +1,6 @@
-# Mind-mapping app demo
+# Spot Mind-mapping app demo
 
-Demo project of a mind mapping app project made using Vite + React
+Demo project of a mind mapping app project named SPOT, made using Vite + React.
 
 # React + Vite
 
