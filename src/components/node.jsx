@@ -15,8 +15,14 @@ const initialNodes = [
     id: "1",
     type: "input",
     data: { label: "Mind Map" },
-    position: { x: 0, y: 0 },
-    style: { border: "20px solid #9999" },
+    position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    style: {
+      background: "#f0f8ff",
+      color: "#333",
+      border: "1px solid #999",
+      borderRadius: "4px",
+      padding: "10px",
+    },
   },
 ];
 const initialEdges = [];
@@ -30,17 +36,18 @@ export default function MindNode() {
   const [name, setName] = useState("");
 
   const addNode = () => {
-    setNodes((e) =>
-      e.concat({
-        id: (e.length + 1).toString(),
-        data: { label: `${name}` },
+    setNodes((prevNodes) => {
+      const newNode = {
+        id: (prevNodes.length + 1).toString(),
+        data: { label: name },
         position: {
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
         },
         style: { border: "10px solid #9999" },
-      })
-    );
+      };
+      return [...prevNodes, newNode];
+    });
   };
 
   const onConnect = useCallback(
