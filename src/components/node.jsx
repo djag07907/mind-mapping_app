@@ -5,8 +5,9 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   addEdge,
+  Background,
 } from "reactflow";
-
+import { saveMindMap, loadMindMap } from "../storage";
 import "reactflow/dist/style.css";
 
 const initialNodes = [
@@ -15,6 +16,7 @@ const initialNodes = [
     type: "input",
     data: { label: "Mind Map" },
     position: { x: 0, y: 0 },
+    style: { border: "20px solid #9999" },
   },
 ];
 const initialEdges = [];
@@ -36,6 +38,7 @@ export default function MindNode() {
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
         },
+        style: { border: "10px solid #9999" },
       })
     );
   };
@@ -45,18 +48,43 @@ export default function MindNode() {
     [setEdges]
   );
 
+  const handleSaveClick = () => {
+    saveMindMap(nodes, edges);
+    console.log(nodes);
+  };
+  const handleLoadClick = () => {
+    const loadedData = loadMindMap();
+    if (loadedData) {
+      setNodes(loadedData.nodes);
+      setEdges(loadedData.edges);
+      console.log(loadedData);
+    }
+  };
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
+  // const nodeOrigin = [0.5, 0.5];
+  const connectionLineStyle = {
+    stroke: "#9999",
+    strokeWidth: 3,
+  };
+  const defaultEdgeOptions = { style: connectionLineStyle, type: "mindmap" };
+
   return (
-    <div id="container" style={{ width: "100%", height: "100vh" }}>
+    <div id="container">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        connectionLineStyle={connectionLineStyle}
+        defaultEdgeOptions={defaultEdgeOptions}
         onConnect={onConnect}
         onLoad={onLoad}
       >
         <Controls />
-
+        <Background variant="dots" gap={12} size={1} />
         <MiniMap
           nodeColor={(n) => {
             if (n.type === "input") return "blue";
@@ -73,6 +101,17 @@ export default function MindNode() {
         />
         <button type="button" onClick={addNode}>
           Add Node
+        </button>
+      </div>
+      <div>
+        <button id="two" onClick={handleSaveClick}>
+          Save Mind Map
+        </button>
+        <button id="three" onClick={handleLoadClick}>
+          Load Mind Map
+        </button>
+        <button id="four" onClick={refreshPage}>
+          Refresh
         </button>
       </div>
     </div>
